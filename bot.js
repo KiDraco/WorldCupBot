@@ -32,7 +32,7 @@ bot.start((ctx) => {
             {
               text: "📘 Abrir Álbum",
               web_app: {
-                url: "https://TU-URL-DE-NETLIFY.com"
+                url: "https://gestoralbummundial2026.netlify.app/"
               }
             }
           ]
