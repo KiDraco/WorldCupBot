@@ -32,8 +32,27 @@ bot.on("message", (ctx) => {
 });
 
 bot.command("rep", (ctx) => {
-  console.log("REP FUNCIONA");
-  ctx.reply("FUNCIONA /rep");
+  console.log("REP RECIBIDO");
+
+  const text = ctx.message.text || "";
+  const input = text.replace(/\/rep(@\w+)?/, "").trim();
+
+  if (!input) {
+    return ctx.reply("Ej: /rep ARG1 ARG2 ARG2");
+  }
+
+  const items = input.split(/\s+/);
+  const counts = {};
+
+  items.forEach(id => {
+    counts[id] = (counts[id] || 0) + 1;
+  });
+
+  const rep = Object.entries(counts)
+    .filter(([id, c]) => c > 1)
+    .map(([id, c]) => `${id} ×${c}`);
+
+  ctx.reply(rep.length ? rep.join("\n") : "No hay repetidas");
 });
 
 bot.launch();
