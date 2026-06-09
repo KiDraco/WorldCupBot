@@ -1,7 +1,7 @@
 const { Telegraf, Markup } = require('telegraf');
 
 const bot = new Telegraf('process.env.BOT_TOKEN)');
-
+console.log("TOKEN:", process.env.BOT_TOKEN);
 bot.start((ctx) => {
   ctx.reply(
     '🏆 Manager Album WorldCup 2026',
