@@ -1,17 +1,21 @@
-const { Telegraf, Markup } = require('telegraf');
+const { Telegraf } = require('telegraf');
 
-const bot = new Telegraf('process.env.BOT_TOKEN)');
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.start((ctx) => {
-  ctx.reply(
-    '🏆 Manager Album WorldCup 2026',
-    Markup.inlineKeyboard([
-      Markup.button.webApp(
-        '📘 Abrir Álbum',
-        'https://gestoralbummundial2026.netlify.app/'
-      )
-    ])
-  );
-});
+async function startBot() {
+  try {
+    console.log("Iniciando bot...");
 
-bot.launch();
+    await bot.launch();
+
+    console.log("Bot iniciado correctamente");
+  } catch (err) {
+    console.error("ERROR EN LAUNCH:", err);
+  }
+}
+
+// cerrar bien procesos en Render
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+startBot();
