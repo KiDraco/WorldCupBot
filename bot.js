@@ -28,36 +28,59 @@ bot.start((ctx) => {
 });
 
 bot.command("rep", (ctx) => {
-  console.log("REP RECIBIDO");
 
-  const text = ctx.message.text || "";
-  console.log("TEXT:", text);
+  const text = ctx.message.text
+    .replace(/\/rep(@\w+)?/, "")
+    .trim();
 
-  const input = text.replace(/\/rep(@\w+)?/, "").trim();
-  console.log("INPUT:", input);
+  if (!text) {
+    return ctx.reply(
+`Ejemplo:
 
-  if (!input) {
-    return ctx.reply("Ej: /rep ARG1 ARG2 ARG2");
+/rep
+ARG: 1,2,2,5
+BRA: 10,10,20`
+    );
   }
-
-  const items = input.split(/\s+/);
-  console.log("ITEMS:", items);
 
   const counts = {};
 
-  items.forEach(id => {
-    counts[id] = (counts[id] || 0) + 1;
+  text.split("\n").forEach(line => {
+
+    const parts = line.split(":");
+
+    if (parts.length < 2) return;
+
+    const code = parts[0]
+      .trim()
+      .split(" ")[0];
+
+    const nums = parts[1]
+      .split(",")
+      .map(x => x.trim())
+      .filter(Boolean);
+
+    nums.forEach(n => {
+
+      const sticker = `${code}${n}`;
+
+      counts[sticker] =
+        (counts[sticker] || 0) + 1;
+
+    });
+
   });
 
-  console.log("COUNTS:", counts);
-
   const rep = Object.entries(counts)
-    .filter(([id, c]) => c > 1)
+    .filter(([_, c]) => c > 1)
     .map(([id, c]) => `${id} ×${c}`);
 
-  console.log("REP:", rep);
+  ctx.reply(
+    rep.length
+      ? rep.join("\n")
+      : "No hay repetidas"
+  );
 
-  ctx.reply(rep.length ? rep.join("\n") : "No hay repetidas");
 });
 
 bot.on("message", (ctx) => {
