@@ -27,6 +27,11 @@ bot.start((ctx) => {
   });
 });
 
+bot.command("rep", (ctx) => {
+  console.log("REP RECIBIDO");
+  ctx.reply("OK");
+});
+
 bot.on("message", (ctx) => {
   console.log("MENSAJE:", ctx.message.text);
 });
